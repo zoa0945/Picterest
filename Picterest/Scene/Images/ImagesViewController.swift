@@ -11,8 +11,9 @@ class ImagesViewController: UIViewController {
     let images: [UIImage] = []
     
     private lazy var imageCollectionView: UICollectionView = {
-        let layout = ImageCollectionViewCustomLayout()
-        layout.delegate = self
+        // TODO: - CustomLayout으로 변경
+        let layout = UICollectionViewFlowLayout()
+//        layout.delegate = self
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         
         return collectionView
@@ -40,7 +41,7 @@ extension ImagesViewController {
     }
 }
 
-extension ImagesViewController: UICollectionViewDataSource, UICollectionViewDelegate {
+extension ImagesViewController: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return 10
     }
@@ -52,10 +53,16 @@ extension ImagesViewController: UICollectionViewDataSource, UICollectionViewDele
         
         return cell
     }
-}
-
-extension ImagesViewController: CustomLayoutDelegate {
-    func cellHeight(_ collectionView: UICollectionView, _ indexPath: IndexPath) -> CGFloat {
-        return images[indexPath.item].size.height
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        let width = collectionView.frame.width - 12
+        let height = width
+        return CGSize(width: width, height: height)
     }
 }
+
+//extension ImagesViewController: CustomLayoutDelegate {
+//    func cellHeight(_ collectionView: UICollectionView, _ indexPath: IndexPath) -> CGFloat {
+//        return images[indexPath.item].size.height
+//    }
+//}

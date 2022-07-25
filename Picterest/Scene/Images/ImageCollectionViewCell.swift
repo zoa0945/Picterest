@@ -17,7 +17,8 @@ class ImageCollectionViewCell: UICollectionViewCell {
     }()
     
     private let titleView: UIView = {
-        let view = UIView()
+        let view = CellTitleView()
+        view.setup()
         view.backgroundColor = .darkGray
         view.alpha = 0.5
         
@@ -25,8 +26,9 @@ class ImageCollectionViewCell: UICollectionViewCell {
     }()
     
     func setup() {
-        contentView.clipsToBounds = true
-        contentView.layer.cornerRadius = 20
+        layer.cornerRadius = 12
+        layer.masksToBounds = true
+        
         layout()
     }
 }
@@ -49,6 +51,5 @@ extension ImageCollectionViewCell {
         titleView.topAnchor.constraint(equalTo: self.topAnchor).isActive = true
         titleView.leadingAnchor.constraint(equalTo: self.leadingAnchor).isActive = true
         titleView.trailingAnchor.constraint(equalTo: self.trailingAnchor).isActive = true
-        titleView.heightAnchor.constraint(equalToConstant: 30).isActive = true
     }
 }
