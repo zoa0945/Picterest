@@ -25,7 +25,7 @@ class ImagesViewController: UIViewController {
         layout()
         imageCollectionView.delegate = self
         imageCollectionView.dataSource = self
-        imageCollectionView.register(ImageCollectionViewCell.self, forCellWithReuseIdentifier: "ImageCollectionViewCell")
+        imageCollectionView.register(CollectionViewCell.self, forCellWithReuseIdentifier: "ImageCell")
     }
 }
 
@@ -47,7 +47,7 @@ extension ImagesViewController: UICollectionViewDataSource, UICollectionViewDele
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ImageCollectionViewCell", for: indexPath) as? ImageCollectionViewCell else { return UICollectionViewCell() }
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ImageCell", for: indexPath) as? CollectionViewCell else { return UICollectionViewCell() }
         
         cell.setup()
         
@@ -58,6 +58,10 @@ extension ImagesViewController: UICollectionViewDataSource, UICollectionViewDele
         let width = collectionView.frame.width - 12
         let height = width
         return CGSize(width: width, height: height)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+        return UIEdgeInsets(top: 0, left: 6, bottom: 0, right: 6)
     }
 }
 

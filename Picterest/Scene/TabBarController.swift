@@ -20,7 +20,7 @@ class TabBarController: UITabBarController {
     }()
     
     private let savedViewController: UIViewController = {
-        let viewController = UIViewController()
+        let viewController = SavedViewController()
         let tabBarItem = UITabBarItem(
             title: "Saved",
             image: UIImage(systemName: "star.bubble"),
