@@ -8,7 +8,7 @@ import UIKit
 class TabBarController: UITabBarController {
     
     private let imagesViewController: UIViewController = {
-        let viewController = UIViewController()
+        let viewController = ImagesViewController()
         let tabBarItem = UITabBarItem(
             title: "Images",
             image: UIImage(systemName: "photo.on.rectangle"),
