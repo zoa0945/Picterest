@@ -1,5 +1,5 @@
 //
-//  ImageCollectionViewCell.swift
+//  CollectionViewCell.swift
 //  Picterest
 //
 //  Created by Mac on 2022/07/25.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-class ImageCollectionViewCell: UICollectionViewCell {
+class CollectionViewCell: UICollectionViewCell {
     private let photoImage: UIImageView = {
         let photo = UIImageView()
         photo.contentMode = .scaleAspectFill
@@ -33,7 +33,7 @@ class ImageCollectionViewCell: UICollectionViewCell {
     }
 }
 
-extension ImageCollectionViewCell {
+extension CollectionViewCell {
     private func layout() {
         [
             photoImage,
