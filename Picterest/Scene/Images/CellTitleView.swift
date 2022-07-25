@@ -22,7 +22,7 @@ class CellTitleView: UIView {
     @objc func tapStarButton(sender: UIButton) {
         sender.isSelected = !sender.isSelected
         if sender.isSelected {
-            sender.tintColor = .yellow
+            sender.tintColor = .systemYellow
         } else {
             sender.tintColor = .white
         }
@@ -32,6 +32,8 @@ class CellTitleView: UIView {
         let label = UILabel()
         label.font = .systemFont(ofSize: 14, weight: .medium)
         label.textColor = .white
+        label.textAlignment = .right
+        label.text = "test"
         
         return label
     }()
@@ -51,17 +53,17 @@ extension CellTitleView {
             $0.translatesAutoresizingMaskIntoConstraints = false
         }
         
-        let inset: CGFloat = 6
+        let inset: CGFloat = 12
         
         starButton.topAnchor.constraint(equalTo: self.topAnchor, constant: inset).isActive = true
         starButton.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: inset).isActive = true
-        starButton.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: inset).isActive = true
+        starButton.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -inset).isActive = true
         starButton.widthAnchor.constraint(equalToConstant: 18).isActive = true
         starButton.heightAnchor.constraint(equalToConstant: 18).isActive = true
         
         indexLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: inset).isActive = true
-        starButton.leadingAnchor.constraint(equalTo: starButton.trailingAnchor, constant: inset).isActive = true
-        indexLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: inset).isActive = true
-        indexLabel.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: inset).isActive = true
+        indexLabel.leadingAnchor.constraint(equalTo: starButton.trailingAnchor, constant: inset).isActive = true
+        indexLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -inset).isActive = true
+        indexLabel.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -inset).isActive = true
     }
 }
