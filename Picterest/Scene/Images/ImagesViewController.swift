@@ -8,7 +8,14 @@
 import UIKit
 
 class ImagesViewController: UIViewController {
-    var imageURLs: [RandomPhoto] = []
+    private let viewModel = ImagesViewModel()
+    var imageURLs: [RandomPhoto] = [] {
+        didSet {
+            DispatchQueue.main.async {
+                self.imageCollectionView.reloadData()
+            }
+        }
+    }
     
     private lazy var imageCollectionView: UICollectionView = {
         let layout = ImageCollectionViewCustomLayout()
@@ -21,16 +28,19 @@ class ImagesViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        UnsplashAPI().getPhoto { photos in
-            self.imageURLs = photos
-            DispatchQueue.main.async {
-                self.imageCollectionView.reloadData()
+        viewModel.getImageURLs { result in
+            switch result {
+            case .success(let photos):
+                self.imageURLs += photos
+            case .failure(let error):
+                print(error.localizedDescription)
             }
         }
         layout()
         imageCollectionView.delegate = self
         imageCollectionView.dataSource = self
-        imageCollectionView.register(CollectionViewCell.self, forCellWithReuseIdentifier: "ImageCell")
+        imageCollectionView.prefetchDataSource = self
+        imageCollectionView.register(ImageCollectionViewCell.self, forCellWithReuseIdentifier: "ImageCell")
     }
 }
 
@@ -52,12 +62,29 @@ extension ImagesViewController: UICollectionViewDataSource, UICollectionViewDele
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ImageCell", for: indexPath) as? CollectionViewCell else { return UICollectionViewCell() }
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ImageCell", for: indexPath) as? ImageCollectionViewCell else { return UICollectionViewCell() }
         
         let imageURL = imageURLs[indexPath.item].urls.thumb
         cell.setup(url: imageURL, indexPath: indexPath.row)
         
         return cell
+    }
+}
+
+extension ImagesViewController: UICollectionViewDataSourcePrefetching {
+    func collectionView(_ collectionView: UICollectionView, prefetchItemsAt indexPaths: [IndexPath]) {
+        indexPaths.forEach {
+            if ($0.row + 1) % 15 == 0 {
+                viewModel.getImageURLs { result in
+                    switch result {
+                    case .success(let photos):
+                        self.imageURLs += photos
+                    case .failure(let error):
+                        print(error.localizedDescription)
+                    }
+                }
+            }
+        }
     }
 }
 
