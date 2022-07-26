@@ -8,7 +8,7 @@
 import UIKit
 
 class CollectionViewCell: UICollectionViewCell {
-    private let photoImage: UIImageView = {
+    let photoImage: UIImageView = {
         let photo = UIImageView()
         photo.contentMode = .scaleAspectFill
         photo.backgroundColor = .gray
@@ -16,20 +16,41 @@ class CollectionViewCell: UICollectionViewCell {
         return photo
     }()
     
-    private let titleView: UIView = {
+    private let titleView: CellTitleView = {
         let view = CellTitleView()
-        view.setup()
         view.backgroundColor = .darkGray
         view.alpha = 0.5
         
         return view
     }()
     
-    func setup() {
+    func setup(url: String, indexPath: Int) {
         layer.cornerRadius = 12
         layer.masksToBounds = true
         
+        LoadImage().loadImage(url) { result in
+            switch result {
+            case .success(let image):
+                DispatchQueue.main.async {
+                    self.photoImage.image = image
+                }
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+        }
+        
+        titleView.setup(indexPath: indexPath)
         layout()
+    }
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        
+        
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
 }
 

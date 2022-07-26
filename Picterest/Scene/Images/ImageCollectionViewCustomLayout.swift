@@ -11,7 +11,7 @@ protocol CustomLayoutDelegate: AnyObject {
     func cellHeight(_ collectionView: UICollectionView, _ indexPath: IndexPath) -> CGFloat
 }
 
-class ImageCollectionViewCustomLayout: UICollectionViewLayout {
+class ImageCollectionViewCustomLayout: UICollectionViewFlowLayout {
     weak var delegate: CustomLayoutDelegate?
     
     let numberOfCells = 2

@@ -8,12 +8,11 @@
 import UIKit
 
 class ImagesViewController: UIViewController {
-    let images: [UIImage] = []
+    var imageURLs: [RandomPhoto] = []
     
     private lazy var imageCollectionView: UICollectionView = {
-        // TODO: - CustomLayout으로 변경
-        let layout = UICollectionViewFlowLayout()
-//        layout.delegate = self
+        let layout = ImageCollectionViewCustomLayout()
+        layout.delegate = self
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         
         return collectionView
@@ -22,6 +21,12 @@ class ImagesViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        UnsplashAPI().getPhoto { photos in
+            self.imageURLs = photos
+            DispatchQueue.main.async {
+                self.imageCollectionView.reloadData()
+            }
+        }
         layout()
         imageCollectionView.delegate = self
         imageCollectionView.dataSource = self
@@ -43,30 +48,22 @@ extension ImagesViewController {
 
 extension ImagesViewController: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 10
+        return imageURLs.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ImageCell", for: indexPath) as? CollectionViewCell else { return UICollectionViewCell() }
         
-        cell.setup()
+        let imageURL = imageURLs[indexPath.item].urls.thumb
+        cell.setup(url: imageURL, indexPath: indexPath.row)
         
         return cell
     }
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let width = collectionView.frame.width - 12
-        let height = width
-        return CGSize(width: width, height: height)
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-        return UIEdgeInsets(top: 0, left: 6, bottom: 0, right: 6)
-    }
 }
 
-//extension ImagesViewController: CustomLayoutDelegate {
-//    func cellHeight(_ collectionView: UICollectionView, _ indexPath: IndexPath) -> CGFloat {
-//        return images[indexPath.item].size.height
-//    }
-//}
+extension ImagesViewController: CustomLayoutDelegate {
+    func cellHeight(_ collectionView: UICollectionView, _ indexPath: IndexPath) -> CGFloat {
+        // TODO: - cellHeight 정해주기
+        return CGFloat(imageURLs[indexPath.item].height / 15)
+    }
+}

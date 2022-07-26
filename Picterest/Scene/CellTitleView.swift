@@ -33,13 +33,13 @@ class CellTitleView: UIView {
         label.font = .systemFont(ofSize: 16, weight: .medium)
         label.textColor = .white
         label.textAlignment = .right
-        label.text = "test"
         
         return label
     }()
     
-    func setup() {
+    func setup(indexPath: Int) {
         layout()
+        indexLabel.text = "\(indexPath)번째 사진"
     }
 }
 
