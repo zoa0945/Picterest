@@ -90,7 +90,11 @@ extension ImagesViewController: UICollectionViewDataSourcePrefetching {
 
 extension ImagesViewController: CustomLayoutDelegate {
     func cellHeight(_ collectionView: UICollectionView, _ indexPath: IndexPath) -> CGFloat {
-        // TODO: - cellHeight 정해주기
-        return CGFloat(imageURLs[indexPath.item].height / 15)
+        let inset = collectionView.contentInset
+        let cellWidth = (collectionView.bounds.width - (inset.left + inset.right)) / 2
+        let imageWidth = CGFloat(imageURLs[indexPath.item].width)
+        let imageHeight = CGFloat(imageURLs[indexPath.item].height)
+        let ratio: CGFloat = imageHeight / imageWidth
+        return CGFloat(cellWidth * ratio)
     }
 }
