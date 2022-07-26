@@ -33,7 +33,7 @@ class ImageCollectionViewCustomLayout: UICollectionViewFlowLayout {
     }
     
     override func prepare() {
-        guard cache.isEmpty, let collectionView = collectionView else { return }
+        guard let collectionView = collectionView else { return }
         
         let cellWidth = width / CGFloat(numberOfCells)
         var cell = 0

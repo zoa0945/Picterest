@@ -8,9 +8,9 @@
 import UIKit
 
 class UnsplashAPI {
-    let accessKey = "iUtJris3bhWBn5KTyhNeOg7oOREEm8aWVkIS4jH9tVg"
+    private let accessKey = "iUtJris3bhWBn5KTyhNeOg7oOREEm8aWVkIS4jH9tVg"
     
-    func getPhoto(_ completion: @escaping ([RandomPhoto]) -> Void) {
+    func getPhoto(_ completion: @escaping (Result<[RandomPhoto], Error>) -> Void) {
         guard let url = URL(string: "https://api.unsplash.com/photos/random?client_id=\(accessKey)&count=15") else {
             return
         }
@@ -26,7 +26,7 @@ class UnsplashAPI {
             let decoder = JSONDecoder()
             do {
                 let photo = try decoder.decode([RandomPhoto].self, from: data)
-                completion(photo)
+                completion(.success(photo))
             } catch {
                 
             }

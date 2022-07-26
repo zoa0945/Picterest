@@ -1,5 +1,5 @@
 //
-//  CollectionViewCell.swift
+//  ImageCollectionViewCell.swift
 //  Picterest
 //
 //  Created by Mac on 2022/07/25.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-class CollectionViewCell: UICollectionViewCell {
+class ImageCollectionViewCell: UICollectionViewCell {
     let photoImage: UIImageView = {
         let photo = UIImageView()
         photo.contentMode = .scaleAspectFill
@@ -42,19 +42,9 @@ class CollectionViewCell: UICollectionViewCell {
         titleView.setup(indexPath: indexPath)
         layout()
     }
-    
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        
-        
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
 }
 
-extension CollectionViewCell {
+extension ImageCollectionViewCell {
     private func layout() {
         [
             photoImage,
