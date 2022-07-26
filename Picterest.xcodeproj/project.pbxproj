@@ -14,6 +14,9 @@
 		0411744A288E932F00817E44 /* SavedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04117449288E932F00817E44 /* SavedViewController.swift */; };
 		0411744E288E969600817E44 /* UIButton+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0411744D288E969600817E44 /* UIButton+.swift */; };
 		04117450288E981A00817E44 /* PhotoCollectionViewHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0411744F288E981A00817E44 /* PhotoCollectionViewHeader.swift */; };
+		04117452288EB2BE00817E44 /* UnsplashAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04117451288EB2BD00817E44 /* UnsplashAPI.swift */; };
+		04117456288EB59E00817E44 /* RandomPhoto.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04117455288EB59E00817E44 /* RandomPhoto.swift */; };
+		04117458288EB79400817E44 /* LoadImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04117457288EB79400817E44 /* LoadImage.swift */; };
 		DE15E65C28604278003DD2F5 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE15E65B28604278003DD2F5 /* AppDelegate.swift */; };
 		DE15E65E28604278003DD2F5 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE15E65D28604278003DD2F5 /* SceneDelegate.swift */; };
 		DE15E66028604278003DD2F5 /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE15E65F28604278003DD2F5 /* TabBarController.swift */; };
@@ -29,6 +32,9 @@
 		04117449288E932F00817E44 /* SavedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SavedViewController.swift; sourceTree = "<group>"; };
 		0411744D288E969600817E44 /* UIButton+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIButton+.swift"; sourceTree = "<group>"; };
 		0411744F288E981A00817E44 /* PhotoCollectionViewHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoCollectionViewHeader.swift; sourceTree = "<group>"; };
+		04117451288EB2BD00817E44 /* UnsplashAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnsplashAPI.swift; sourceTree = "<group>"; };
+		04117455288EB59E00817E44 /* RandomPhoto.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RandomPhoto.swift; sourceTree = "<group>"; };
+		04117457288EB79400817E44 /* LoadImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadImage.swift; sourceTree = "<group>"; };
 		DE15E65828604278003DD2F5 /* Picterest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Picterest.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DE15E65B28604278003DD2F5 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		DE15E65D28604278003DD2F5 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -87,6 +93,23 @@
 			path = Extension;
 			sourceTree = "<group>";
 		};
+		04117453288EB2CB00817E44 /* Network */ = {
+			isa = PBXGroup;
+			children = (
+				04117451288EB2BD00817E44 /* UnsplashAPI.swift */,
+				04117457288EB79400817E44 /* LoadImage.swift */,
+			);
+			path = Network;
+			sourceTree = "<group>";
+		};
+		04117454288EB59100817E44 /* Entity */ = {
+			isa = PBXGroup;
+			children = (
+				04117455288EB59E00817E44 /* RandomPhoto.swift */,
+			);
+			path = Entity;
+			sourceTree = "<group>";
+		};
 		DE15E64F28604278003DD2F5 = {
 			isa = PBXGroup;
 			children = (
@@ -108,6 +131,8 @@
 			children = (
 				DE15E65B28604278003DD2F5 /* AppDelegate.swift */,
 				DE15E65D28604278003DD2F5 /* SceneDelegate.swift */,
+				04117454288EB59100817E44 /* Entity */,
+				04117453288EB2CB00817E44 /* Network */,
 				0411744C288E968600817E44 /* Extension */,
 				04117441288E7BF500817E44 /* Scene */,
 				DE15E66428604279003DD2F5 /* Assets.xcassets */,
@@ -192,10 +217,13 @@
 				04117443288E7C0900817E44 /* CollectionViewCell.swift in Sources */,
 				DE15E65C28604278003DD2F5 /* AppDelegate.swift in Sources */,
 				04117450288E981A00817E44 /* PhotoCollectionViewHeader.swift in Sources */,
+				04117452288EB2BE00817E44 /* UnsplashAPI.swift in Sources */,
 				0411744E288E969600817E44 /* UIButton+.swift in Sources */,
+				04117456288EB59E00817E44 /* RandomPhoto.swift in Sources */,
 				04117440288E7AAB00817E44 /* ImagesViewController.swift in Sources */,
 				DE15E65E28604278003DD2F5 /* SceneDelegate.swift in Sources */,
 				0411744A288E932F00817E44 /* SavedViewController.swift in Sources */,
+				04117458288EB79400817E44 /* LoadImage.swift in Sources */,
 				04117445288E7C9800817E44 /* ImageCollectionViewCustomLayout.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

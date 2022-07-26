@@ -46,8 +46,6 @@ extension SavedViewController: UICollectionViewDataSource, UICollectionViewDeleg
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "SavedCell", for: indexPath) as? CollectionViewCell else { return UICollectionViewCell() }
         
-        cell.setup()
-        
         return cell
     }
     
