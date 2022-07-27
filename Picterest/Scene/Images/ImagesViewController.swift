@@ -8,8 +8,8 @@
 import UIKit
 
 class ImagesViewController: UIViewController {
-    private let viewModel = ImagesViewModel()
-    var imageURLs: [RandomPhoto] = [] {
+    private let viewModel = SceneViewModel()
+    var randomPhotos: [RandomPhoto] = [] {
         didSet {
             DispatchQueue.main.async {
                 self.imageCollectionView.reloadData()
@@ -31,7 +31,7 @@ class ImagesViewController: UIViewController {
         viewModel.getImageURLs { result in
             switch result {
             case .success(let photos):
-                self.imageURLs += photos
+                self.randomPhotos += photos
             case .failure(let error):
                 print(error.localizedDescription)
             }
@@ -58,13 +58,13 @@ extension ImagesViewController {
 
 extension ImagesViewController: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return imageURLs.count
+        return randomPhotos.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ImageCell", for: indexPath) as? ImageCollectionViewCell else { return UICollectionViewCell() }
         
-        let imageURL = imageURLs[indexPath.item].urls.thumb
+        let imageURL = randomPhotos[indexPath.item].urls.thumb
         cell.setup(url: imageURL, indexPath: indexPath.row)
         
         cell.titleView.delegate = self
@@ -73,6 +73,7 @@ extension ImagesViewController: UICollectionViewDataSource, UICollectionViewDele
     }
 }
 
+// MARK: - prefetch api data
 extension ImagesViewController: UICollectionViewDataSourcePrefetching {
     func collectionView(_ collectionView: UICollectionView, prefetchItemsAt indexPaths: [IndexPath]) {
         indexPaths.forEach {
@@ -80,7 +81,7 @@ extension ImagesViewController: UICollectionViewDataSourcePrefetching {
                 viewModel.getImageURLs { result in
                     switch result {
                     case .success(let photos):
-                        self.imageURLs += photos
+                        self.randomPhotos += photos
                     case .failure(let error):
                         print(error.localizedDescription)
                     }
@@ -90,38 +91,36 @@ extension ImagesViewController: UICollectionViewDataSourcePrefetching {
     }
 }
 
+// MARK: - CustomLayoutDelegate: Config Cell Height
 extension ImagesViewController: CustomLayoutDelegate {
     func cellHeight(_ collectionView: UICollectionView, _ indexPath: IndexPath) -> CGFloat {
         let inset = collectionView.contentInset
         let cellWidth = (collectionView.bounds.width - (inset.left + inset.right)) / 2
-        let imageWidth = CGFloat(imageURLs[indexPath.item].width)
-        let imageHeight = CGFloat(imageURLs[indexPath.item].height)
+        let imageWidth = CGFloat(randomPhotos[indexPath.item].width)
+        let imageHeight = CGFloat(randomPhotos[indexPath.item].height)
         let ratio: CGFloat = imageHeight / imageWidth
         return CGFloat(cellWidth * ratio)
     }
 }
 
+// MARK: - TitleViewDelegate: present alert and save data
 extension ImagesViewController: TitleViewDelegate {
     func downloadImage(_ index: Int) {
-        let imageURL = imageURLs[index].urls.thumb
+        let randomPhoto = randomPhotos[index]
         let alert = UIAlertController(title: "완료", message: "다운로드가 완료되었습니다.", preferredStyle: .alert)
         alert.addTextField { textfield in
             textfield.placeholder = "Memo"
         }
         
-        let cancelAction = UIAlertAction(title: "취소", style: .cancel)
+        // TODO: - 취소버튼 눌렀을 때 starbutton selected -> false로 변경
+        let cancelAction = UIAlertAction(title: "취소", style: .cancel) { _ in
+            NotificationCenter.default.post(name: Notification.Name("cancel"), object: nil)
+        }
         let okAction = UIAlertAction(title: "확인", style: .default) { [weak self] _ in
             guard let self = self,
                   let memo = alert.textFields?[0].text else { return }
             
-            let filePath = self.viewModel.configFileManager(index)
-            let text = imageURL + "_" + memo
-            
-            do {
-                try text.write(to: filePath, atomically: false, encoding: .utf8)
-            } catch let error {
-                print(error.localizedDescription)
-            }
+            self.viewModel.saveData(randomPhoto, memo)
         }
         
         alert.addAction(okAction)

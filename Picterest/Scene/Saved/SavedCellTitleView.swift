@@ -1,42 +1,22 @@
 //
-//  CellTitleView.swift
+//  SavedCellTitleView.swift
 //  Picterest
 //
-//  Created by Mac on 2022/07/25.
+//  Created by Mac on 2022/07/27.
 //
 
 import UIKit
 
-protocol TitleViewDelegate: AnyObject {
-    func downloadImage(_ index: Int)
-}
-
-class CellTitleView: UIView {
-    weak var delegate: TitleViewDelegate?
-    var index = 0
-    
-    private lazy var starButton: UIButton = {
+class SavedCellTitleView: UIView {
+    lazy var starButton: UIButton = {
         let button = UIButton()
-        button.setImage(systemName: "star", state: .normal)
-        button.setImage(systemName: "star.fill", state: .selected)
-        button.tintColor = .white
-        
-        button.addTarget(self, action: #selector(tapStarButton(sender:)), for: .touchUpInside)
+        button.setImage(systemName: "star.fill", state: .normal)
+        button.tintColor = .systemYellow
         
         return button
     }()
     
-    @objc func tapStarButton(sender: UIButton) {
-        sender.isSelected = !sender.isSelected
-        if sender.isSelected {
-            delegate?.downloadImage(index)
-            sender.tintColor = .systemYellow
-        } else {
-            sender.tintColor = .white
-        }
-    }
-    
-    private let indexLabel: UILabel = {
+    let indexLabel: UILabel = {
         let label = UILabel()
         label.font = .systemFont(ofSize: 16, weight: .medium)
         label.textColor = .white
@@ -45,14 +25,13 @@ class CellTitleView: UIView {
         return label
     }()
     
-    func setup(indexPath: Int) {
-        index = indexPath
+    func setup(memo: String) {
         layout()
-        indexLabel.text = "\(indexPath)번째 사진"
+        indexLabel.text = memo
     }
 }
 
-extension CellTitleView {
+extension SavedCellTitleView {
     private func layout() {
         [
             starButton,

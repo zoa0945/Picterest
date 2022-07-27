@@ -8,6 +8,9 @@
 import UIKit
 
 class SavedViewController: UIViewController {
+    private let viewModel = SceneViewModel()
+    var photos: [Photo] = []
+    
     private let photoCollectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         let tableView = UICollectionView(frame: .zero, collectionViewLayout: layout)
@@ -20,9 +23,15 @@ class SavedViewController: UIViewController {
         
         photoCollectionView.delegate = self
         photoCollectionView.dataSource = self
-        photoCollectionView.register(ImageCollectionViewCell.self, forCellWithReuseIdentifier: "SavedCell")
+        photoCollectionView.register(PhotoCollectionViewCell.self, forCellWithReuseIdentifier: "SavedCell")
         photoCollectionView.register(PhotoCollectionViewHeader.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "PhotoHeader")
         layout()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        photos = viewModel.fetchCoreData()
     }
 }
 
@@ -40,11 +49,14 @@ extension SavedViewController {
 
 extension SavedViewController: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 10
+        return photos.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "SavedCell", for: indexPath) as? ImageCollectionViewCell else { return UICollectionViewCell() }
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "SavedCell", for: indexPath) as? PhotoCollectionViewCell else { return UICollectionViewCell() }
+        
+        let photo = photos[indexPath.row]
+        cell.setup(photo: photo, indexPath: indexPath.row)
         
         return cell
     }
