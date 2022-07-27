@@ -8,6 +8,8 @@
 import UIKit
 
 class SavedViewController: UIViewController {
+    var Photos: [Photo] = []
+    
     private let photoCollectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         let tableView = UICollectionView(frame: .zero, collectionViewLayout: layout)
