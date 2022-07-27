@@ -8,6 +8,7 @@
 import Foundation
 
 struct RandomPhoto: Codable {
+    let id: String
     let width: Int
     let height: Int
     let urls: PhotoURL
@@ -15,4 +16,9 @@ struct RandomPhoto: Codable {
 
 struct PhotoURL: Codable {
     let thumb: String
+}
+
+struct SavedPhoto {
+    let imageURL: String
+    let memo: String
 }

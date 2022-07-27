@@ -8,7 +8,7 @@
 import UIKit
 
 class ImageCollectionViewCell: UICollectionViewCell {
-    let photoImage: UIImageView = {
+    private let photoImage: UIImageView = {
         let photo = UIImageView()
         photo.contentMode = .scaleAspectFill
         photo.backgroundColor = .gray
@@ -16,7 +16,7 @@ class ImageCollectionViewCell: UICollectionViewCell {
         return photo
     }()
     
-    private let titleView: CellTitleView = {
+    let titleView: CellTitleView = {
         let view = CellTitleView()
         view.backgroundColor = .darkGray
         view.alpha = 0.5
@@ -50,7 +50,7 @@ extension ImageCollectionViewCell {
             photoImage,
             titleView
         ].forEach {
-            addSubview($0)
+            contentView.addSubview($0)
             $0.translatesAutoresizingMaskIntoConstraints = false
         }
         
