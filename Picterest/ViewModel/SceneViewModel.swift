@@ -1,5 +1,5 @@
 //
-//  ImagesViewModel.swift
+//  SceneViewModel.swift
 //  Picterest
 //
 //  Created by Mac on 2022/07/26.
@@ -8,7 +8,7 @@
 import UIKit
 import CoreData
 
-class ImagesViewModel {
+class SceneViewModel {
     private let networkService = UnsplashAPI()
     private let appdelegate = UIApplication.shared.delegate as! AppDelegate
     private lazy var context = appdelegate.persistentContainer.viewContext
@@ -47,6 +47,18 @@ class ImagesViewModel {
             try self.context.save()
         } catch let error {
             print(error.localizedDescription)
+        }
+    }
+    
+    func fetchCoreData() -> [Photo] {
+        do {
+            let request = Photo.fetchRequest()
+            let photos = try context.fetch(request)
+            print("success")
+            return photos
+        } catch let error {
+            print(error.localizedDescription)
+            return []
         }
     }
 }

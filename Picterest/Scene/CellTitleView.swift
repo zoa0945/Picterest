@@ -49,6 +49,13 @@ class CellTitleView: UIView {
         index = indexPath
         layout()
         indexLabel.text = "\(indexPath)번째 사진"
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(cancelDownload), name: Notification.Name("cancel"), object: nil)
+    }
+    
+    @objc func cancelDownload() {
+        self.starButton.isSelected = false
+        self.starButton.tintColor = .white
     }
 }
 

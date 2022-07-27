@@ -8,7 +8,8 @@
 import UIKit
 
 class SavedViewController: UIViewController {
-    var Photos: [Photo] = []
+    private let viewModel = SceneViewModel()
+    var photos: [Photo] = []
     
     private let photoCollectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
@@ -19,6 +20,8 @@ class SavedViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        photos = viewModel.fetchCoreData()
         
         photoCollectionView.delegate = self
         photoCollectionView.dataSource = self
@@ -42,11 +45,13 @@ extension SavedViewController {
 
 extension SavedViewController: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 10
+        return photos.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "SavedCell", for: indexPath) as? ImageCollectionViewCell else { return UICollectionViewCell() }
+        
+        let item = photos[indexPath.row]
         
         return cell
     }

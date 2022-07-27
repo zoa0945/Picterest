@@ -8,7 +8,7 @@
 import UIKit
 
 class ImagesViewController: UIViewController {
-    private let viewModel = ImagesViewModel()
+    private let viewModel = SceneViewModel()
     var randomPhotos: [RandomPhoto] = [] {
         didSet {
             DispatchQueue.main.async {
@@ -110,7 +110,9 @@ extension ImagesViewController: TitleViewDelegate {
         }
         
         // TODO: - 취소버튼 눌렀을 때 starbutton selected -> false로 변경
-        let cancelAction = UIAlertAction(title: "취소", style: .cancel)
+        let cancelAction = UIAlertAction(title: "취소", style: .cancel) { _ in
+            NotificationCenter.default.post(name: Notification.Name("cancel"), object: nil)
+        }
         let okAction = UIAlertAction(title: "확인", style: .default) { [weak self] _ in
             guard let self = self,
                   let memo = alert.textFields?[0].text else { return }
