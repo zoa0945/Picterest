@@ -1,13 +1,13 @@
 //
-//  ImageCollectionViewCell.swift
+//  PhotoCollectionViewCell.swift
 //  Picterest
 //
-//  Created by Mac on 2022/07/25.
+//  Created by Mac on 2022/07/27.
 //
 
 import UIKit
 
-class ImageCollectionViewCell: UICollectionViewCell {
+class PhotoCollectionViewCell: UICollectionViewCell {
     private let photoImage: UIImageView = {
         let photo = UIImageView()
         photo.contentMode = .scaleAspectFill
@@ -16,19 +16,22 @@ class ImageCollectionViewCell: UICollectionViewCell {
         return photo
     }()
     
-    let titleView: ImageCellTitleView = {
-        let view = ImageCellTitleView()
+    let titleView: SavedCellTitleView = {
+        let view = SavedCellTitleView()
         view.backgroundColor = .darkGray
         view.alpha = 0.5
         
         return view
     }()
     
-    func setup(url: String, indexPath: Int) {
+    func setup(photo: Photo, indexPath: Int) {
+        guard let url = photo.imageurl,
+              let memo = photo.memo else { return }
         layer.cornerRadius = 12
         layer.masksToBounds = true
         
-        LoadImage().loadImage(url) { result in
+        LoadImage().loadImage(url) { [weak self] result in
+            guard let self = self else { return }
             switch result {
             case .success(let image):
                 DispatchQueue.main.async {
@@ -39,12 +42,12 @@ class ImageCollectionViewCell: UICollectionViewCell {
             }
         }
         
-        titleView.setup(indexPath: indexPath)
+        titleView.setup(memo: memo)
         layout()
     }
 }
 
-extension ImageCollectionViewCell {
+extension PhotoCollectionViewCell {
     private func layout() {
         [
             photoImage,

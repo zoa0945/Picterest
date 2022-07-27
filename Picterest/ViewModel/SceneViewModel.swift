@@ -17,31 +17,35 @@ class SceneViewModel {
         return networkService.getPhoto(completion)
     }
     
-    private func configFileManager(_ indexPath: Int) -> URL {
-        let docDir = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
-        let filePath = docDir.appendingPathComponent("\(indexPath).txt")
+    private func configFileManager(_ id: String) -> URL {
+        let docDir = try! FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
+        let filePath = docDir.appendingPathComponent("\(id).png")
         
         return filePath
     }
     
-    func saveInFileManager(_ randomPhoto: RandomPhoto, _ indexPath: Int, _ memo: String) {
-        let filePath = configFileManager(indexPath)
-        
-        let text = randomPhoto.urls.thumb + "_" + memo
-        
-        do {
-            try text.write(to: filePath, atomically: false, encoding: .utf8)
-        } catch let error {
-            print(error.localizedDescription)
-        }
-    }
-    
-    func saveInCoreData(_ randomPhoto: RandomPhoto, _ indexPath: Int, _ memo: String) {
+    func saveData(_ randomPhoto: RandomPhoto, _ memo: String) {
+        let filePath = configFileManager(randomPhoto.id)
         let newPhoto = Photo(context: self.context)
         newPhoto.memo = memo
         newPhoto.id = randomPhoto.id
-        newPhoto.filepath = configFileManager(indexPath)
+        newPhoto.filepath = filePath
         newPhoto.imageurl = randomPhoto.urls.thumb
+        
+        LoadImage().loadImage(randomPhoto.urls.thumb) { result in
+            switch result {
+            case .success(let image):
+                if let data = image.pngData() {
+                    do {
+                        try data.write(to: filePath)
+                    } catch {
+                        print("filemanager save error: \(error.localizedDescription)")
+                    }
+                }
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+        }
         
         do {
             try self.context.save()

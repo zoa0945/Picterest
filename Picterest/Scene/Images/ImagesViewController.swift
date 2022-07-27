@@ -73,6 +73,7 @@ extension ImagesViewController: UICollectionViewDataSource, UICollectionViewDele
     }
 }
 
+// MARK: - prefetch api data
 extension ImagesViewController: UICollectionViewDataSourcePrefetching {
     func collectionView(_ collectionView: UICollectionView, prefetchItemsAt indexPaths: [IndexPath]) {
         indexPaths.forEach {
@@ -90,6 +91,7 @@ extension ImagesViewController: UICollectionViewDataSourcePrefetching {
     }
 }
 
+// MARK: - CustomLayoutDelegate: Config Cell Height
 extension ImagesViewController: CustomLayoutDelegate {
     func cellHeight(_ collectionView: UICollectionView, _ indexPath: IndexPath) -> CGFloat {
         let inset = collectionView.contentInset
@@ -101,6 +103,7 @@ extension ImagesViewController: CustomLayoutDelegate {
     }
 }
 
+// MARK: - TitleViewDelegate: present alert and save data
 extension ImagesViewController: TitleViewDelegate {
     func downloadImage(_ index: Int) {
         let randomPhoto = randomPhotos[index]
@@ -117,8 +120,7 @@ extension ImagesViewController: TitleViewDelegate {
             guard let self = self,
                   let memo = alert.textFields?[0].text else { return }
             
-            self.viewModel.saveInCoreData(randomPhoto, index, memo)
-            self.viewModel.saveInFileManager(randomPhoto, index, memo)
+            self.viewModel.saveData(randomPhoto, memo)
         }
         
         alert.addAction(okAction)
