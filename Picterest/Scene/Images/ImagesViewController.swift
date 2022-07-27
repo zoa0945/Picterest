@@ -67,6 +67,8 @@ extension ImagesViewController: UICollectionViewDataSource, UICollectionViewDele
         let imageURL = imageURLs[indexPath.item].urls.thumb
         cell.setup(url: imageURL, indexPath: indexPath.row)
         
+        cell.titleView.delegate = self
+        
         return cell
     }
 }
@@ -96,5 +98,35 @@ extension ImagesViewController: CustomLayoutDelegate {
         let imageHeight = CGFloat(imageURLs[indexPath.item].height)
         let ratio: CGFloat = imageHeight / imageWidth
         return CGFloat(cellWidth * ratio)
+    }
+}
+
+extension ImagesViewController: TitleViewDelegate {
+    func downloadImage(_ index: Int) {
+        let imageURL = imageURLs[index].urls.thumb
+        let alert = UIAlertController(title: "완료", message: "다운로드가 완료되었습니다.", preferredStyle: .alert)
+        alert.addTextField { textfield in
+            textfield.placeholder = "Memo"
+        }
+        
+        let cancelAction = UIAlertAction(title: "취소", style: .cancel)
+        let okAction = UIAlertAction(title: "확인", style: .default) { [weak self] _ in
+            guard let self = self,
+                  let memo = alert.textFields?[0].text else { return }
+            
+            let filePath = self.viewModel.configFileManager(index)
+            let text = imageURL + "_" + memo
+            
+            do {
+                try text.write(to: filePath, atomically: false, encoding: .utf8)
+            } catch let error {
+                print(error.localizedDescription)
+            }
+        }
+        
+        alert.addAction(okAction)
+        alert.addAction(cancelAction)
+        
+        self.present(alert, animated: false)
     }
 }

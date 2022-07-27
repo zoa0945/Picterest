@@ -7,7 +7,14 @@
 
 import UIKit
 
+protocol TitleViewDelegate: AnyObject {
+    func downloadImage(_ index: Int)
+}
+
 class CellTitleView: UIView {
+    weak var delegate: TitleViewDelegate?
+    var index = 0
+    
     private lazy var starButton: UIButton = {
         let button = UIButton()
         button.setImage(systemName: "star", state: .normal)
@@ -22,6 +29,7 @@ class CellTitleView: UIView {
     @objc func tapStarButton(sender: UIButton) {
         sender.isSelected = !sender.isSelected
         if sender.isSelected {
+            delegate?.downloadImage(index)
             sender.tintColor = .systemYellow
         } else {
             sender.tintColor = .white
@@ -38,6 +46,7 @@ class CellTitleView: UIView {
     }()
     
     func setup(indexPath: Int) {
+        index = indexPath
         layout()
         indexLabel.text = "\(indexPath)번째 사진"
     }

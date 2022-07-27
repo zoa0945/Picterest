@@ -13,4 +13,11 @@ class ImagesViewModel {
     func getImageURLs(_ completion: @escaping (Result<[RandomPhoto], Error>) -> Void) {
         return networkService.getPhoto(completion)
     }
+    
+    func configFileManager(_ indexPath: Int) -> URL {
+        let docDir = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
+        let filePath = docDir.appendingPathComponent("\(indexPath).txt")
+        
+        return filePath
+    }
 }
