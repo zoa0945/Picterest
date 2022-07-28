@@ -112,7 +112,6 @@ extension ImagesViewController: TitleViewDelegate {
             textfield.placeholder = "Memo"
         }
         
-        // TODO: - 취소버튼 눌렀을 때 starbutton selected -> false로 변경
         let cancelAction = UIAlertAction(title: "취소", style: .cancel) { _ in
             NotificationCenter.default.post(name: Notification.Name("cancel"), object: nil)
         }
