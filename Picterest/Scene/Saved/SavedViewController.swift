@@ -32,6 +32,7 @@ class SavedViewController: UIViewController {
         super.viewWillAppear(animated)
         
         photos = viewModel.fetchCoreData()
+        photoCollectionView.reloadData()
     }
 }
 
