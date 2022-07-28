@@ -103,8 +103,22 @@ extension SavedViewController: UIGestureRecognizerDelegate {
         
         let position = gestureRecognizer.location(in: photoCollectionView)
         if let indexPath = photoCollectionView.indexPathForItem(at: position) {
-            // TODO: - make delete alert, delete data in filemanager, coredata, photos array
-            print("here \(indexPath.row)")
+            let alert = UIAlertController(title: "삭제", message: "삭제하시겠습니까?", preferredStyle: .alert)
+            let cancelAction = UIAlertAction(title: "취소", style: .cancel)
+            let deleteAction = UIAlertAction(title: "삭제", style: .default) { [weak self] _ in
+                guard let self = self,
+                      let filePath = self.photos[indexPath.row].filepath else { return }
+                self.viewModel.deleteFileManagerData(filePath)
+                self.viewModel.deleteCoreData(self.photos[indexPath.row])
+                
+                self.photos.remove(at: indexPath.row)
+                self.photoCollectionView.reloadData()
+            }
+            
+            alert.addAction(cancelAction)
+            alert.addAction(deleteAction)
+            
+            self.present(alert, animated: true)
         }
     }
 }
