@@ -9,6 +9,8 @@ import UIKit
 
 class ImagesViewController: UIViewController {
     private let viewModel = SceneViewModel()
+    private var currentPage = 1
+    
     var randomPhotos: [RandomPhoto] = [] {
         didSet {
             DispatchQueue.main.async {
@@ -28,9 +30,10 @@ class ImagesViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        viewModel.getImageURLs { result in
+        viewModel.getImageURLs(currentPage) { result in
             switch result {
             case .success(let photos):
+                self.currentPage += 1
                 self.randomPhotos += photos
             case .failure(let error):
                 print(error.localizedDescription)
@@ -64,10 +67,11 @@ extension ImagesViewController: UICollectionViewDataSource, UICollectionViewDele
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ImageCell", for: indexPath) as? ImageCollectionViewCell else { return UICollectionViewCell() }
         
-        let imageURL = randomPhotos[indexPath.item].urls.thumb
-        cell.setup(url: imageURL, indexPath: indexPath.row)
+//        let imageURL = randomPhotos[indexPath.item].urls.thumb
+        let randomPhoto = randomPhotos[indexPath.item]
+        cell.setup(photo: randomPhoto, indexPath: indexPath.row)
         
-        cell.titleView.delegate = self
+        cell.delegate = self
         
         return cell
     }
@@ -76,11 +80,14 @@ extension ImagesViewController: UICollectionViewDataSource, UICollectionViewDele
 // MARK: - prefetch api data
 extension ImagesViewController: UICollectionViewDataSourcePrefetching {
     func collectionView(_ collectionView: UICollectionView, prefetchItemsAt indexPaths: [IndexPath]) {
+        guard currentPage != 1 else { return }
+        
         indexPaths.forEach {
-            if ($0.row + 1) % 15 == 0 {
-                viewModel.getImageURLs { result in
+            if ($0.row + 1) / 15 + 1 == currentPage {
+                viewModel.getImageURLs(currentPage) { result in
                     switch result {
                     case .success(let photos):
+                        self.currentPage += 1
                         self.randomPhotos += photos
                     case .failure(let error):
                         print(error.localizedDescription)
@@ -105,6 +112,12 @@ extension ImagesViewController: CustomLayoutDelegate {
 
 // MARK: - TitleViewDelegate: present alert and save data
 extension ImagesViewController: TitleViewDelegate {
+    func tapStarButtonDelegate(_ cell: UICollectionViewCell, _ starButton: UIButton) {
+        let index = imageCollectionView.indexPath(for: cell)
+        randomPhotos[(index?.row)!].isFavorite = starButton.isSelected
+        imageCollectionView.reloadData()
+    }
+    
     func downloadImage(_ index: Int) {
         let randomPhoto = randomPhotos[index]
         let size = [randomPhoto.width, randomPhoto.height]
@@ -113,7 +126,9 @@ extension ImagesViewController: TitleViewDelegate {
             textfield.placeholder = "Memo"
         }
         
-        let cancelAction = UIAlertAction(title: "취소", style: .cancel) { _ in
+        let cancelAction = UIAlertAction(title: "취소", style: .cancel) { [weak self] _ in
+            guard let self = self else { return }
+            self.randomPhotos[index].isFavorite = false
             NotificationCenter.default.post(name: Notification.Name("cancel"), object: nil)
         }
         let okAction = UIAlertAction(title: "확인", style: .default) { [weak self] _ in
