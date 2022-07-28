@@ -108,6 +108,8 @@ extension SavedViewController: UIGestureRecognizerDelegate {
             let deleteAction = UIAlertAction(title: "삭제", style: .default) { [weak self] _ in
                 guard let self = self,
                       let filePath = self.photos[indexPath.row].filepath else { return }
+                NotificationCenter.default.post(name: Notification.Name("delete"), object: nil)
+                
                 self.viewModel.deleteFileManagerData(filePath)
                 self.viewModel.deleteCoreData(self.photos[indexPath.row])
                 

@@ -12,6 +12,12 @@ struct RandomPhoto: Codable {
     let width: Int
     let height: Int
     let urls: PhotoURL
+    
+    var isFavorite: Bool = false
+    
+    enum CodingKeys: String, CodingKey {
+        case id, width, height, urls
+    }
 }
 
 struct PhotoURL: Codable {

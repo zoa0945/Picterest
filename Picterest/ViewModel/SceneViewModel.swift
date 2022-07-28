@@ -13,8 +13,8 @@ class SceneViewModel {
     private let appdelegate = UIApplication.shared.delegate as! AppDelegate
     private lazy var context = appdelegate.persistentContainer.viewContext
     
-    func getImageURLs(_ completion: @escaping (Result<[RandomPhoto], Error>) -> Void) {
-        return networkService.getPhoto(completion)
+    func getImageURLs(_ page: Int, _ completion: @escaping (Result<[RandomPhoto], Error>) -> Void) {
+        return networkService.getPhoto(page, completion)
     }
     
     private func configFileManager(_ id: String) -> URL {

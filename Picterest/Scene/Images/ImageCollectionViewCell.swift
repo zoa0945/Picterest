@@ -7,7 +7,15 @@
 
 import UIKit
 
+protocol TitleViewDelegate: AnyObject {
+    func downloadImage(_ index: Int)
+    func tapStarButtonDelegate(_ cell: UICollectionViewCell, _ starButton: UIButton)
+}
+
 class ImageCollectionViewCell: UICollectionViewCell {
+    weak var delegate: TitleViewDelegate?
+    var index = 0
+    
     private let photoImage: UIImageView = {
         let photo = UIImageView()
         photo.contentMode = .scaleAspectFill
@@ -24,11 +32,12 @@ class ImageCollectionViewCell: UICollectionViewCell {
         return view
     }()
     
-    func setup(url: String, indexPath: Int) {
+    func setup(photo: RandomPhoto, indexPath: Int) {
         layer.cornerRadius = 12
         layer.masksToBounds = true
+        index = indexPath
         
-        LoadImage().loadImage(url) { result in
+        LoadImage().loadImage(photo.urls.thumb) { result in
             switch result {
             case .success(let image):
                 DispatchQueue.main.async {
@@ -39,8 +48,18 @@ class ImageCollectionViewCell: UICollectionViewCell {
             }
         }
         
-        titleView.setup(indexPath: indexPath)
+        titleView.setup(buttonState: photo.isFavorite ,indexPath: indexPath)
+        titleView.starButton.addTarget(self, action: #selector(tapStarButton(sender:)), for: .touchUpInside)
+        
         layout()
+    }
+    
+    @objc func tapStarButton(sender: UIButton) {
+        sender.isSelected = !sender.isSelected
+        if sender.isSelected {
+            delegate?.downloadImage(index)
+        }
+        delegate?.tapStarButtonDelegate(self, titleView.starButton)
     }
 }
 

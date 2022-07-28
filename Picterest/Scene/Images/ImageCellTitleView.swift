@@ -7,34 +7,17 @@
 
 import UIKit
 
-protocol TitleViewDelegate: AnyObject {
-    func downloadImage(_ index: Int)
-}
-
 class ImageCellTitleView: UIView {
-    weak var delegate: TitleViewDelegate?
     var index = 0
     
     lazy var starButton: UIButton = {
         let button = UIButton()
         button.setImage(systemName: "star", state: .normal)
         button.setImage(systemName: "star.fill", state: .selected)
-        button.tintColor = .white
-        
-        button.addTarget(self, action: #selector(tapStarButton(sender:)), for: .touchUpInside)
+        button.tintColor = .systemYellow
         
         return button
     }()
-    
-    @objc func tapStarButton(sender: UIButton) {
-        sender.isSelected = !sender.isSelected
-        if sender.isSelected {
-            delegate?.downloadImage(index)
-            sender.tintColor = .systemYellow
-        } else {
-            sender.tintColor = .white
-        }
-    }
     
     let indexLabel: UILabel = {
         let label = UILabel()
@@ -45,17 +28,18 @@ class ImageCellTitleView: UIView {
         return label
     }()
     
-    func setup(indexPath: Int) {
+    func setup(buttonState: Bool, indexPath: Int) {
         index = indexPath
         layout()
         indexLabel.text = "\(indexPath)번째 사진"
+        starButton.isSelected = buttonState
         
-        NotificationCenter.default.addObserver(self, selector: #selector(cancelDownload), name: Notification.Name("cancel"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(changeStarButtonState), name: Notification.Name("cancel"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(changeStarButtonState), name: Notification.Name("delete"), object: nil)
     }
     
-    @objc func cancelDownload() {
+    @objc func changeStarButtonState() {
         self.starButton.isSelected = false
-        self.starButton.tintColor = .white
     }
 }
 

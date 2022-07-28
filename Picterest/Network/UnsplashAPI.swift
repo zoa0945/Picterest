@@ -9,9 +9,15 @@ import UIKit
 
 class UnsplashAPI {
     private let accessKey = "iUtJris3bhWBn5KTyhNeOg7oOREEm8aWVkIS4jH9tVg"
+    private var dataTasks: [URLSessionTask] = []
     
-    func getPhoto(_ completion: @escaping (Result<[RandomPhoto], Error>) -> Void) {
-        guard let url = URL(string: "https://api.unsplash.com/photos/random?client_id=\(accessKey)&count=15") else {
+    func getPhoto(_ page: Int, _ completion: @escaping (Result<[RandomPhoto], Error>) -> Void) {
+        guard let url = URL(string: "https://api.unsplash.com/photos?page=\(page)&client_id=\(accessKey)&per_page=15"),
+              dataTasks.firstIndex(
+                where: { task in
+                  task.originalRequest?.url == url
+                }
+              ) == nil else {
             return
         }
         
@@ -32,5 +38,6 @@ class UnsplashAPI {
             }
         }
         dataTask.resume()
+        dataTasks.append(dataTask)
     }
 }
