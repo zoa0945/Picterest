@@ -107,6 +107,7 @@ extension ImagesViewController: CustomLayoutDelegate {
 extension ImagesViewController: TitleViewDelegate {
     func downloadImage(_ index: Int) {
         let randomPhoto = randomPhotos[index]
+        let size = [randomPhoto.width, randomPhoto.height]
         let alert = UIAlertController(title: "완료", message: "다운로드가 완료되었습니다.", preferredStyle: .alert)
         alert.addTextField { textfield in
             textfield.placeholder = "Memo"
@@ -119,7 +120,7 @@ extension ImagesViewController: TitleViewDelegate {
             guard let self = self,
                   let memo = alert.textFields?[0].text else { return }
             
-            self.viewModel.saveData(randomPhoto, memo)
+            self.viewModel.saveData(randomPhoto, memo, size)
         }
         
         alert.addAction(okAction)

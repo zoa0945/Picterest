@@ -25,7 +25,9 @@ class SavedViewController: UIViewController {
         photoCollectionView.dataSource = self
         photoCollectionView.register(PhotoCollectionViewCell.self, forCellWithReuseIdentifier: "SavedCell")
         photoCollectionView.register(PhotoCollectionViewHeader.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "PhotoHeader")
+        
         layout()
+        setupLongPressGesture()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -63,9 +65,10 @@ extension SavedViewController: UICollectionViewDataSource, UICollectionViewDeleg
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        guard let imageSize = photos[indexPath.row].imagesize else { return CGSize() }
         let width = collectionView.frame.width - 12
-        let height = width * 1.6
-        return CGSize(width: width, height: height)
+        let ratio = CGFloat(imageSize[1]) / CGFloat(imageSize[0])
+        return CGSize(width: width, height: width * ratio)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
@@ -82,5 +85,26 @@ extension SavedViewController: UICollectionViewDataSource, UICollectionViewDeleg
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
         let width = collectionView.frame.width - 32
         return CGSize(width: width, height: 56)
+    }
+}
+
+extension SavedViewController: UIGestureRecognizerDelegate {
+    func setupLongPressGesture() {
+        let gesture = UILongPressGestureRecognizer(target: self, action: #selector(handleLongPress(gestureRecognizer:)))
+        gesture.delegate = self
+        gesture.delaysTouchesBegan = true
+        photoCollectionView.addGestureRecognizer(gesture)
+    }
+    
+    @objc func handleLongPress(gestureRecognizer: UILongPressGestureRecognizer) {
+        if gestureRecognizer.state != .began {
+            return
+        }
+        
+        let position = gestureRecognizer.location(in: photoCollectionView)
+        if let indexPath = photoCollectionView.indexPathForItem(at: position) {
+            // TODO: - make delete alert, delete data in filemanager, coredata, photos array
+            print("here \(indexPath.row)")
+        }
     }
 }
