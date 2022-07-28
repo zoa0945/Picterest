@@ -16,6 +16,7 @@ extension Photo {
         return NSFetchRequest<Photo>(entityName: "Photo")
     }
 
+    @NSManaged public var imagesize: [Int]?
     @NSManaged public var filepath: URL?
     @NSManaged public var id: String?
     @NSManaged public var imageurl: String?

@@ -24,11 +24,12 @@ class SceneViewModel {
         return filePath
     }
     
-    func saveData(_ randomPhoto: RandomPhoto, _ memo: String) {
+    func saveData(_ randomPhoto: RandomPhoto, _ memo: String, _ size: [Int]) {
         let filePath = configFileManager(randomPhoto.id)
         let newPhoto = Photo(context: self.context)
         newPhoto.memo = memo
         newPhoto.id = randomPhoto.id
+        newPhoto.imagesize = size
         newPhoto.filepath = filePath
         newPhoto.imageurl = randomPhoto.urls.thumb
         
