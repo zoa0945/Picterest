@@ -59,11 +59,30 @@ class SceneViewModel {
         do {
             let request = Photo.fetchRequest()
             let photos = try context.fetch(request)
-            print("success")
             return photos
         } catch let error {
             print(error.localizedDescription)
             return []
+        }
+    }
+    
+    func deleteCoreData(_ object: Photo) {
+        context.delete(object)
+        
+        do {
+            try context.save()
+        } catch let error {
+            print(error.localizedDescription)
+        }
+    }
+    
+    func deleteFileManagerData(_ filePath: URL) {
+        let fileManager = FileManager.default
+        
+        do {
+            try fileManager.removeItem(at: filePath)
+        } catch let error {
+            print(error.localizedDescription)
         }
     }
 }
