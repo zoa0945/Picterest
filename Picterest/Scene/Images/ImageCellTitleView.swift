@@ -35,7 +35,6 @@ class ImageCellTitleView: UIView {
         starButton.isSelected = buttonState
         
         NotificationCenter.default.addObserver(self, selector: #selector(changeStarButtonState), name: Notification.Name("cancel"), object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(changeStarButtonState), name: Notification.Name("delete"), object: nil)
     }
     
     @objc func changeStarButtonState() {
