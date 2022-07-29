@@ -7,7 +7,7 @@
 
 import UIKit
 
-class PhotoCollectionViewCell: UICollectionViewCell {
+class PhotoCollectionViewCell: UICollectionViewCell, ReusableCell {
     private let photoImage: UIImageView = {
         let photo = UIImageView()
         photo.contentMode = .scaleAspectFill

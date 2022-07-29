@@ -8,7 +8,7 @@
 import UIKit
 
 class ImagesViewController: UIViewController {
-    private let viewModel = SceneViewModel()
+    private let viewModel = ImagesViewModel()
     private var currentPage = 1
     
     var randomPhotos: [RandomPhoto] = [] {
@@ -43,7 +43,23 @@ class ImagesViewController: UIViewController {
         imageCollectionView.delegate = self
         imageCollectionView.dataSource = self
         imageCollectionView.prefetchDataSource = self
-        imageCollectionView.register(ImageCollectionViewCell.self, forCellWithReuseIdentifier: "ImageCell")
+        imageCollectionView.register(cellType: ImageCollectionViewCell.self)
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(resetStarButton(_:)), name: Notification.Name("delete"), object: nil)
+    }
+    
+    @objc func resetStarButton(_ notification: Notification) {
+        guard let imageURL = notification.object as? String else { return }
+        if let idx = randomPhotos.firstIndex(where: { photo in
+            photo.urls.thumb == imageURL
+        }) {
+            randomPhotos[idx].isFavorite = false
+        }
+        
     }
 }
 
@@ -65,9 +81,8 @@ extension ImagesViewController: UICollectionViewDataSource, UICollectionViewDele
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ImageCell", for: indexPath) as? ImageCollectionViewCell else { return UICollectionViewCell() }
+        let cell = collectionView.dequeueReusableCell(cellType: ImageCollectionViewCell.self, indexPath: indexPath)
         
-//        let imageURL = randomPhotos[indexPath.item].urls.thumb
         let randomPhoto = randomPhotos[indexPath.item]
         cell.setup(photo: randomPhoto, indexPath: indexPath.row)
         
@@ -135,7 +150,8 @@ extension ImagesViewController: TitleViewDelegate {
             guard let self = self,
                   let memo = alert.textFields?[0].text else { return }
             
-            self.viewModel.saveData(randomPhoto, memo, size)
+            self.viewModel.saveFileManagerData(randomPhoto)
+            self.viewModel.saveCoreData(randomPhoto, memo, size)
         }
         
         alert.addAction(okAction)

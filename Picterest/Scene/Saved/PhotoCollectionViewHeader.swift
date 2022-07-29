@@ -7,7 +7,7 @@
 
 import UIKit
 
-class PhotoCollectionViewHeader: UICollectionReusableView {
+class PhotoCollectionViewHeader: UICollectionReusableView, ReusableCell {
     private let downloadButton: UIButton = {
         let button = UIButton()
         button.setImage(systemName: "square.and.arrow.down", state: .normal)
