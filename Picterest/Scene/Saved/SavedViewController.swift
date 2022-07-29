@@ -8,7 +8,7 @@
 import UIKit
 
 class SavedViewController: UIViewController {
-    private let viewModel = SceneViewModel()
+    private let viewModel = SavedViewModel()
     var photos: [Photo] = []
     
     private let photoCollectionView: UICollectionView = {
@@ -23,8 +23,8 @@ class SavedViewController: UIViewController {
         
         photoCollectionView.delegate = self
         photoCollectionView.dataSource = self
-        photoCollectionView.register(PhotoCollectionViewCell.self, forCellWithReuseIdentifier: "SavedCell")
-        photoCollectionView.register(PhotoCollectionViewHeader.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "PhotoHeader")
+        photoCollectionView.register(cellType: PhotoCollectionViewCell.self)
+        photoCollectionView.register(viewType: PhotoCollectionViewHeader.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader)
         
         layout()
         setupLongPressGesture()
@@ -56,7 +56,7 @@ extension SavedViewController: UICollectionViewDataSource, UICollectionViewDeleg
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "SavedCell", for: indexPath) as? PhotoCollectionViewCell else { return UICollectionViewCell() }
+        let cell = collectionView.dequeueReusableCell(cellType: PhotoCollectionViewCell.self, indexPath: indexPath)
         
         let photo = photos[indexPath.row]
         cell.setup(photo: photo, indexPath: indexPath.row)
@@ -76,8 +76,8 @@ extension SavedViewController: UICollectionViewDataSource, UICollectionViewDeleg
     }
     
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-        guard kind == UICollectionView.elementKindSectionHeader,
-              let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "PhotoHeader", for: indexPath) as? PhotoCollectionViewHeader else { return UICollectionReusableView() }
+        guard kind == UICollectionView.elementKindSectionHeader else { return UICollectionReusableView() }
+        let header = collectionView.dequeueReusableSupplementaryView(viewType: PhotoCollectionViewHeader.self, kind: kind, indexPath: indexPath)
         
         return header
     }
@@ -108,6 +108,7 @@ extension SavedViewController: UIGestureRecognizerDelegate {
             let deleteAction = UIAlertAction(title: "삭제", style: .default) { [weak self] _ in
                 guard let self = self,
                       let filePath = self.photos[indexPath.row].filepath else { return }
+                NotificationCenter.default.post(name: Notification.Name("delete"), object: self.photos[indexPath.row].imageurl)
                 
                 self.viewModel.deleteFileManagerData(filePath)
                 self.viewModel.deleteCoreData(self.photos[indexPath.row])

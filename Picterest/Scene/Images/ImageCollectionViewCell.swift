@@ -12,7 +12,7 @@ protocol TitleViewDelegate: AnyObject {
     func tapStarButtonDelegate(_ cell: UICollectionViewCell, _ starButton: UIButton)
 }
 
-class ImageCollectionViewCell: UICollectionViewCell {
+class ImageCollectionViewCell: UICollectionViewCell, ReusableCell {
     weak var delegate: TitleViewDelegate?
     var index = 0
     
