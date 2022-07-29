@@ -8,6 +8,8 @@
 import Foundation
 
 extension URLSession {
+    static var dataTasks: [URLSessionTask] = []
+    
     @discardableResult
     func dataTask(_ endpoint: URLRequest, handler: @escaping (Data?, URLResponse?, Error?) -> Void) -> URLSessionDataTask {
         let dataTask = dataTask(with: endpoint, completionHandler: handler)
@@ -16,7 +18,11 @@ extension URLSession {
     }
     
     static func request<T: Decodable>(_ session: URLSession = .shared, endpoint: URLRequest, completion: @escaping (Result<T, APIError>) -> Void) {
-        session.dataTask(endpoint) { data, response, error in
+        guard dataTasks.firstIndex(where: { task in
+            task.originalRequest?.url == endpoint.url
+        }) == nil else { return }
+        
+        let dataTask = session.dataTask(endpoint) { data, response, error in
             guard error == nil else {
                 completion(.failure(.requestError))
                 return
@@ -35,5 +41,6 @@ extension URLSession {
                 completion(.failure(.parsingError))
             }
         }
+        dataTasks.append(dataTask)
     }
 }

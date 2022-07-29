@@ -30,7 +30,7 @@ class ImagesViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        viewModel.getImageURLs(currentPage) { result in
+        viewModel.getPhotos(currentPage) { result in
             switch result {
             case .success(let photos):
                 self.currentPage += 1
@@ -99,7 +99,7 @@ extension ImagesViewController: UICollectionViewDataSourcePrefetching {
         
         indexPaths.forEach {
             if ($0.row + 1) / 15 + 1 == currentPage {
-                viewModel.getImageURLs(currentPage) { result in
+                viewModel.getPhotos(currentPage) { result in
                     switch result {
                     case .success(let photos):
                         self.currentPage += 1
@@ -128,9 +128,8 @@ extension ImagesViewController: CustomLayoutDelegate {
 // MARK: - TitleViewDelegate: present alert and save data
 extension ImagesViewController: TitleViewDelegate {
     func tapStarButtonDelegate(_ cell: UICollectionViewCell, _ starButton: UIButton) {
-        let index = imageCollectionView.indexPath(for: cell)
-        randomPhotos[(index?.row)!].isFavorite = starButton.isSelected
-        imageCollectionView.reloadData()
+        guard let index = imageCollectionView.indexPath(for: cell) else { return }
+        randomPhotos[index.row].isFavorite = starButton.isSelected
     }
     
     func downloadImage(_ index: Int) {

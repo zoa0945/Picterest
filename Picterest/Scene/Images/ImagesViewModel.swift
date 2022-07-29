@@ -14,7 +14,7 @@ class ImagesViewModel {
     private let appdelegate = UIApplication.shared.delegate as! AppDelegate
     private lazy var context = appdelegate.persistentContainer.viewContext
     
-    func getImageURLs(_ page: Int, _ completion: @escaping (Result<[RandomPhoto], APIError>) -> Void) {
+    func getPhotos(_ page: Int, _ completion: @escaping (Result<[RandomPhoto], APIError>) -> Void) {
         return networkService.getPhoto(page, completion)
     }
     

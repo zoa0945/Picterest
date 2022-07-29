@@ -26,6 +26,7 @@ extension URL {
     static let baseURL = "https://api.unsplash.com/photos"
     
     static func makeEndPoint(_ endpoint: String) -> URL {
-        return URL(string: baseURL + endpoint)!
+        guard let url = URL(string: baseURL + endpoint) else { fatalError() }
+        return url
     }
 }
