@@ -108,8 +108,8 @@
 			children = (
 				04117449288E932F00817E44 /* SavedViewController.swift */,
 				047B3ACC2893BB9000B1638D /* SavedViewModel.swift */,
-				047B3ABD28914FA000B1638D /* SavedCellTitleView.swift */,
 				047B3ABB28914CC800B1638D /* PhotoCollectionViewCell.swift */,
+				047B3ABD28914FA000B1638D /* SavedCellTitleView.swift */,
 				0411744F288E981A00817E44 /* PhotoCollectionViewHeader.swift */,
 			);
 			path = Saved;
