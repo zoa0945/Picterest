@@ -7,6 +7,7 @@
 
 import UIKit
 import CoreData
+import RxSwift
 
 class ImagesViewModel {
     private let networkService = UnsplashAPI()
@@ -16,6 +17,10 @@ class ImagesViewModel {
     
     func getPhotos(_ page: Int, _ completion: @escaping (Result<[RandomPhoto], APIError>) -> Void) {
         return networkService.getPhoto(page, completion)
+    }
+    
+    func getPhotosWithRxSwift(_ page: Int) -> Observable<[RandomPhoto]> {
+        return networkService.getPhotoWithRxSwift(page)
     }
     
     func saveFileManagerData(_ randomPhoto: RandomPhoto) {
