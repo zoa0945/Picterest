@@ -32,14 +32,40 @@ class ImageCollectionViewCell: UICollectionViewCell, ReusableCell {
         return view
     }()
     
-    func setup(photo: RandomPhoto, indexPath: Int) {
+//    func setup(photo: RandomPhoto, indexPath: Int) {
+//        layer.cornerRadius = 12
+//        layer.masksToBounds = true
+//        index = indexPath
+//
+//        LoadImage().loadImage(photo.urls.thumb) { result in
+//            switch result {
+//            case .success(let image):
+//                DispatchQueue.main.async {
+//                    self.photoImage.image = image
+//                }
+//            case .failure(let error):
+//                print(error.localizedDescription)
+//            }
+//        }
+//
+//        titleView.setup(buttonState: photo.isFavorite ,indexPath: indexPath)
+//        titleView.starButton.addTarget(self, action: #selector(tapStarButton(sender:)), for: .touchUpInside)
+//
+//        layout()
+//    }
+    
+    func setup(photo: RandomPhoto?, indexPath: Int) {
+        guard let photo = photo else { return }
+        
         layer.cornerRadius = 12
         layer.masksToBounds = true
         index = indexPath
         
+        // TODO: - PhotoURL json에서 String으로 파싱해서 넘겨주기
         LoadImage().loadImage(photo.urls.thumb) { result in
             switch result {
             case .success(let image):
+                print("get Image")
                 DispatchQueue.main.async {
                     self.photoImage.image = image
                 }

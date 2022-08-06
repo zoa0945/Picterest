@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import RxSwift
 
 class ImagesViewController: UIViewController {
     private let viewModel = ImagesViewModel()
@@ -18,6 +19,9 @@ class ImagesViewController: UIViewController {
             }
         }
     }
+    
+    var randomPhotosWithRxSwift = BehaviorSubject<[RandomPhoto]>(value: [])
+    let disposeBag = DisposeBag()
     
     private lazy var imageCollectionView: UICollectionView = {
         let layout = ImageCollectionViewCustomLayout()
@@ -39,6 +43,19 @@ class ImagesViewController: UIViewController {
                 print(error.localizedDescription)
             }
         }
+        
+        let photoObserver = viewModel.getPhotosWithRxSwift(currentPage)
+        photoObserver
+            .subscribe(onNext: { [weak self] newRandomPhotos in
+                guard let self = self else { return }
+                self.randomPhotosWithRxSwift.onNext(newRandomPhotos)
+                
+                DispatchQueue.main.async {
+                    self.imageCollectionView.reloadData()
+                }
+            })
+            .disposed(by: disposeBag)
+        
         layout()
         imageCollectionView.delegate = self
         imageCollectionView.dataSource = self
@@ -77,14 +94,29 @@ extension ImagesViewController {
 
 extension ImagesViewController: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return randomPhotos.count
+        do {
+            return try randomPhotosWithRxSwift.value().count
+        } catch {
+            return 0
+        }
+//        return randomPhotos.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(cellType: ImageCollectionViewCell.self, indexPath: indexPath)
         
-        let randomPhoto = randomPhotos[indexPath.item]
+        var randomPhoto: RandomPhoto? {
+            do {
+                return try randomPhotosWithRxSwift.value()[indexPath.row]
+            } catch {
+                return nil
+            }
+        }
+        
         cell.setup(photo: randomPhoto, indexPath: indexPath.row)
+        
+//        let randomPhoto = randomPhotos[indexPath.item]
+//        cell.setup(photo: randomPhoto, indexPath: indexPath.row)
         
         cell.delegate = self
         

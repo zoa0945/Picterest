@@ -30,6 +30,7 @@
 		047B3AC82893B80E00B1638D /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B3AC72893B80E00B1638D /* CoreDataManager.swift */; };
 		047B3ACA2893B89B00B1638D /* PhotoFileManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B3AC92893B89B00B1638D /* PhotoFileManager.swift */; };
 		047B3ACD2893BB9000B1638D /* SavedViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B3ACC2893BB9000B1638D /* SavedViewModel.swift */; };
+		2F9BE28F0D99060EE9443F33 /* Pods_Picterest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B4B3A5BD08F77F54B2EDFFD1 /* Pods_Picterest.framework */; };
 		DE15E65C28604278003DD2F5 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE15E65B28604278003DD2F5 /* AppDelegate.swift */; };
 		DE15E65E28604278003DD2F5 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE15E65D28604278003DD2F5 /* SceneDelegate.swift */; };
 		DE15E66028604278003DD2F5 /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE15E65F28604278003DD2F5 /* TabBarController.swift */; };
@@ -61,6 +62,9 @@
 		047B3AC72893B80E00B1638D /* CoreDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
 		047B3AC92893B89B00B1638D /* PhotoFileManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoFileManager.swift; sourceTree = "<group>"; };
 		047B3ACC2893BB9000B1638D /* SavedViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SavedViewModel.swift; sourceTree = "<group>"; };
+		B4B3A5BD08F77F54B2EDFFD1 /* Pods_Picterest.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Picterest.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		C7CB3DBC3C47B7C402CDB47C /* Pods-Picterest.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Picterest.debug.xcconfig"; path = "Target Support Files/Pods-Picterest/Pods-Picterest.debug.xcconfig"; sourceTree = "<group>"; };
+		CCFB0DC91EDA845C7B83491E /* Pods-Picterest.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Picterest.release.xcconfig"; path = "Target Support Files/Pods-Picterest/Pods-Picterest.release.xcconfig"; sourceTree = "<group>"; };
 		DE15E65828604278003DD2F5 /* Picterest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Picterest.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DE15E65B28604278003DD2F5 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		DE15E65D28604278003DD2F5 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -75,6 +79,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2F9BE28F0D99060EE9443F33 /* Pods_Picterest.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -163,11 +168,31 @@
 			path = Manager;
 			sourceTree = "<group>";
 		};
+		A0D3CB388EC9B25ADA456AA4 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				B4B3A5BD08F77F54B2EDFFD1 /* Pods_Picterest.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		CA1A9941AFC569E46B391B87 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				C7CB3DBC3C47B7C402CDB47C /* Pods-Picterest.debug.xcconfig */,
+				CCFB0DC91EDA845C7B83491E /* Pods-Picterest.release.xcconfig */,
+			);
+			name = Pods;
+			path = Pods;
+			sourceTree = "<group>";
+		};
 		DE15E64F28604278003DD2F5 = {
 			isa = PBXGroup;
 			children = (
 				DE15E65A28604278003DD2F5 /* Picterest */,
 				DE15E65928604278003DD2F5 /* Products */,
+				CA1A9941AFC569E46B391B87 /* Pods */,
+				A0D3CB388EC9B25ADA456AA4 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -204,9 +229,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = DE15E66C28604279003DD2F5 /* Build configuration list for PBXNativeTarget "Picterest" */;
 			buildPhases = (
+				377A44F66C9F4831369FB6A1 /* [CP] Check Pods Manifest.lock */,
 				DE15E65428604278003DD2F5 /* Sources */,
 				DE15E65528604278003DD2F5 /* Frameworks */,
 				DE15E65628604278003DD2F5 /* Resources */,
+				A4CF33BA1626F7586F43CFEC /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -261,6 +288,48 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		377A44F66C9F4831369FB6A1 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Picterest-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		A4CF33BA1626F7586F43CFEC /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Picterest/Pods-Picterest-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Picterest/Pods-Picterest-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Picterest/Pods-Picterest-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		DE15E65428604278003DD2F5 /* Sources */ = {
@@ -426,6 +495,7 @@
 		};
 		DE15E66D28604279003DD2F5 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = C7CB3DBC3C47B7C402CDB47C /* Pods-Picterest.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -453,6 +523,7 @@
 		};
 		DE15E66E28604279003DD2F5 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = CCFB0DC91EDA845C7B83491E /* Pods-Picterest.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
