@@ -61,11 +61,9 @@ class ImageCollectionViewCell: UICollectionViewCell, ReusableCell {
         layer.masksToBounds = true
         index = indexPath
         
-        // TODO: - PhotoURL json에서 String으로 파싱해서 넘겨주기
         LoadImage().loadImage(photo.urls.thumb) { result in
             switch result {
             case .success(let image):
-                print("get Image")
                 DispatchQueue.main.async {
                     self.photoImage.image = image
                 }

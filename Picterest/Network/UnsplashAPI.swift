@@ -39,25 +39,14 @@ class UnsplashAPI {
             .filter { response, _ in
                 return 200..<300 ~= response.statusCode
             }
-            .map { _, data -> [[String: Any]] in
-                guard let json = try? JSONSerialization.jsonObject(with: data, options: []),
-                      let result = json as? [[String: Any]] else {
+            .map { _, data -> [RandomPhoto] in
+                let decoder = JSONDecoder()
+                do {
+                    let randomPhoto = try decoder.decode([RandomPhoto].self, from: data)
+                    return randomPhoto
+                } catch let error {
+                    print("parsing Error: \(error.localizedDescription)")
                     return []
-                }
-                return result
-            }
-            .filter { result in
-                return result.count > 0
-            }
-            .map { objects in
-                return objects.compactMap { dic -> RandomPhoto? in
-                    guard let id = dic["id"] as? String,
-                          let width = dic["width"] as? Int,
-                          let height = dic["height"] as? Int,
-                          let urls = dic["urls"] as? PhotoURL else {
-                        return nil
-                    }
-                    return RandomPhoto(id: id, width: width, height: height, urls: urls, isFavorite: false)
                 }
             }
     }
